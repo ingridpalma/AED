@@ -4,6 +4,7 @@ import random
 from threading import Thread
 from enum import Enum
 import sys
+import requests
 
 
 class DeviceEnum(Enum):
@@ -47,31 +48,40 @@ class DeviceSimulator:
         :param type: Um DeviceEnum indicando o tipo do dispositivo
         :param stop: Variável que sinaliza o fim da execução do dispositivo
         """
+        serverUrl = "http://127.0.0.1:5000/server"
         device_id = str(uuid.uuid4())
         if type is DeviceEnum.TEMPERATURE.value:
             while True:
-                print({'id': device_id, 'ts': time.time(), 'value': random.randrange(5, 40)})
+                print("Enviando Mensagem...")
+                response = requests.post(serverUrl, json={'id': device_id, 'ts': time.time(), 'value': random.randrange(5, 40)})
+                print("{0} : {1}".format(response.status_code, response.text))
                 time.sleep(1)
                 if stop():
                     break
 
         elif type is DeviceEnum.HUMIDITY.value:
             while True:
-                print({'id': device_id, 'ts': time.time(), 'value': random.randrange(10, 100)})
+                print("Enviando Mensagem...")
+                response = requests.post(serverUrl, json={'id': device_id, 'ts': time.time(), 'value': random.randrange(10, 100)})
+                print("{0} : {1}".format(response.status_code, response.text))
                 time.sleep(4)
                 if stop():
                     break
 
         elif type is DeviceEnum.DOOR.value:
             while True:
-                print({'id': device_id, 'ts': time.time(), 'value': random.choice(['OPENED', 'CLOSED', 'LOCKED'])})
+                print("Enviando Mensagem...")
+                response = requests.post(serverUrl, json={'id': device_id, 'ts': time.time(), 'value': random.choice(['OPENED', 'CLOSED', 'LOCKED'])})
+                print("{0} : {1}".format(response.status_code, response.text))
                 time.sleep(9)
                 if stop():
                     break
 
         elif type is DeviceEnum.LIGHT.value:
             while True:
-                print({'id': device_id, 'ts': time.time(), 'value': random.choice(['ON', 'OFF'])})
+                print("Enviando Mensagem...")
+                response = requests.post(serverUrl, json={'id': device_id, 'ts': time.time(), 'value': random.choice(['ON', 'OFF'])})
+                print("{0} : {1}".format(response.status_code, response.text))
                 time.sleep(13)
                 if stop():
                     break
