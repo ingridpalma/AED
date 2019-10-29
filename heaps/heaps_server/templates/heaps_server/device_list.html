@@ -1,0 +1,23 @@
+{% load static %}
+<html>
+    <head>
+        <title>Heap Project - Grupo 04</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{% static 'css/heaps_server.css' %}">
+    </head>
+    <body>
+        <div>
+            <h1><a href="/">IoT Devices</a></h1>
+        </div>
+
+        {% for device in devices %}
+            <div>
+                <p>published: {{ device.published_date }}</p>
+                <h2><a href="">{{ device.description }}</a></h2>
+                <h3><a href="">{{ device.id_device }}</a></h3>
+                <p>{{ linebreaksbr }}</p>
+            </div>
+        {% endfor %}
+    </body>
+</html>
