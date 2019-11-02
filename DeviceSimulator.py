@@ -41,7 +41,7 @@ class DeviceSimulator:
         Realiza a leitura de acordo com o tipo de dispositivo informado
     """
 
-    def sensor(type, stop):
+    def sensor(type, device_id, stop):
         """
         Simula a leitura de um dispositivo e exibe na tela
 
@@ -49,11 +49,11 @@ class DeviceSimulator:
         :param stop: Variável que sinaliza o fim da execução do dispositivo
         """
         serverUrl = "http://127.0.0.1:5000/server"
-        device_id = str(uuid.uuid4())
+        #message_id = str(uuid.uuid4())
         if type is DeviceEnum.TEMPERATURE.value:
             while True:
                 print("Enviando Mensagem...")
-                response = requests.post(serverUrl, json={'id': device_id, 'ts': time.time(), 'value': random.randrange(5, 40)})
+                response = requests.post(serverUrl, json={'device_type': type, 'id': str(uuid.uuid4()), 'ts': time.time(), 'value': random.randrange(5, 40)})
                 print("{0} : {1}".format(response.status_code, response.text))
                 time.sleep(1)
                 if stop():
@@ -62,7 +62,7 @@ class DeviceSimulator:
         elif type is DeviceEnum.HUMIDITY.value:
             while True:
                 print("Enviando Mensagem...")
-                response = requests.post(serverUrl, json={'id': device_id, 'ts': time.time(), 'value': random.randrange(10, 100)})
+                response = requests.post(serverUrl, json={'device_type': type, 'id': str(uuid.uuid4()), 'ts': time.time(), 'value': random.randrange(10, 100)})
                 print("{0} : {1}".format(response.status_code, response.text))
                 time.sleep(4)
                 if stop():
@@ -71,7 +71,7 @@ class DeviceSimulator:
         elif type is DeviceEnum.DOOR.value:
             while True:
                 print("Enviando Mensagem...")
-                response = requests.post(serverUrl, json={'id': device_id, 'ts': time.time(), 'value': random.choice(['OPENED', 'CLOSED', 'LOCKED'])})
+                response = requests.post(serverUrl, json={'device_type': type, 'id': str(uuid.uuid4()), 'ts': time.time(), 'value': random.choice(['OPENED', 'CLOSED', 'LOCKED'])})
                 print("{0} : {1}".format(response.status_code, response.text))
                 time.sleep(9)
                 if stop():
@@ -80,7 +80,7 @@ class DeviceSimulator:
         elif type is DeviceEnum.LIGHT.value:
             while True:
                 print("Enviando Mensagem...")
-                response = requests.post(serverUrl, json={'id': device_id, 'ts': time.time(), 'value': random.choice(['ON', 'OFF'])})
+                response = requests.post(serverUrl, json={'device_type': type, 'id': str(uuid.uuid4()), 'ts': time.time(), 'value': random.choice(['ON', 'OFF'])})
                 print("{0} : {1}".format(response.status_code, response.text))
                 time.sleep(13)
                 if stop():
@@ -115,7 +115,7 @@ if __name__ == "__main__":
     stop_threads = False
     threads = list()
     for i in range(numberOfDevices):
-        device = Thread(target=DeviceSimulator.sensor, args=(DeviceEnum.random(), lambda: stop_threads))
+        device = Thread(target=DeviceSimulator.sensor, args=(DeviceEnum.random(), i, lambda: stop_threads))
         threads.append(device)
         device.start()
 
