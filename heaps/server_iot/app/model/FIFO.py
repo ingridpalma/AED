@@ -11,7 +11,7 @@ class FIFO:
 
     def pop(self):
         if self.queue:
-            print('Removendo elemento...')
+            #print('Removendo elemento...')
             return self.queue.popleft()
         return None
 

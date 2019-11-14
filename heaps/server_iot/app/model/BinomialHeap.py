@@ -1,3 +1,6 @@
+import json
+import ast
+
 class BinomialTree:
     def __init__(self, key):
         self.key = key
@@ -73,10 +76,13 @@ class BinomialHeap:
         self.merge(g)
 
     def push(self, item):
-        self.insert(item)
+        self.insert(json.dumps(item))
 
     def pop(self):
-        return self.extract_min()
+        r = self.extract_min()
+        if r is not None:
+            return ast.literal_eval(r)
+        return r
 
 
 

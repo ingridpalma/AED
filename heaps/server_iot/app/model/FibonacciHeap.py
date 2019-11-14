@@ -1,3 +1,6 @@
+import json
+import ast
+
 class Node:
     """Methods:
     - add_child: add a child to the node
