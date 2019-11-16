@@ -15,9 +15,9 @@ from threading import Thread
 import time
 import json
 
-#queue = FIFO()
+queue = FIFO()
 #queue = BinomialHeap()
-queue = Fheap()
+#queue = Fheap()
 
 
 class CloudGateway:
