@@ -33,10 +33,10 @@ class CloudGateway:
 
 
 #queue = FIFO()
-queue = BinomialHeap()
-#queue = Fheap()
+#queue = BinomialHeap()
+queue = Fheap()
 
-file = open('result_binomial.txt'.format(time.time()), 'w')
+file = open('result_fheap.txt'.format(time.time()), 'w')
 localGateway = Thread(target=CloudGateway.send, args=(queue, file,))
 localGateway.start()
 

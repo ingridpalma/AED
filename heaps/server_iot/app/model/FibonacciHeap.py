@@ -323,10 +323,14 @@ class Fheap:
         self.extract_min()
 
     def push(self, item):
-        self.insert(Node(item))
+        self.insert(Node(json.dumps(item)))
 
     def pop(self):
-        return self.extract_min().key
+        r = self.extract_min()
+        if r is not None:
+            return ast.literal_eval(r.key)
+        return r
+        #r = self.extract_min()
 
     def get_min(self):
         return self.min.key
