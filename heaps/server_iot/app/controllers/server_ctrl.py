@@ -15,16 +15,11 @@ from threading import Thread
 import time
 import json
 
-queue = FIFO()
-#queue = BinomialHeap()
-#queue = Fheap()
-
 
 class CloudGateway:
 
-    def send(queue):
+    def send(queue, file):
 
-        start = time.time()
         while True:
             time.sleep(0.5)
             item = queue.pop()
@@ -32,16 +27,17 @@ class CloudGateway:
                 continue
 
             total = time.time() - item["ts"]
-            print("Priority Class: {0} | Queue Time: {1}".format(item["device_type"], total))
-
-        #print("Tempo total: {0}".format(time.time() - start))
-                #break;
+            file.write("Priority Class: {0} | Queue Time: {1}\n".format(item["device_type"], total))
+            file.flush()
 
 
-# Binomial =  Tempo total: 0.0002810955047607422
-# FIFO = Tempo total: 1.0967254638671875e-05
 
-localGateway = Thread(target=CloudGateway.send, args=(queue,))
+#queue = FIFO()
+queue = BinomialHeap()
+#queue = Fheap()
+
+file = open('result_binomial.txt'.format(time.time()), 'w')
+localGateway = Thread(target=CloudGateway.send, args=(queue, file,))
 localGateway.start()
 
 
@@ -55,7 +51,6 @@ def index():
 def server():
     data = request.get_json()
     data["ts"] = time.time()
-    # adicionando no priorizador
     queue.push(data)
     return "ok", 200
 
@@ -63,7 +58,3 @@ def server():
 @app.route("/list")
 def list_fila():
     return render_template("prioridade.html", queue=queue)
-
-
-
-
