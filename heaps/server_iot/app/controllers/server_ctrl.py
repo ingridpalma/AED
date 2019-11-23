@@ -23,18 +23,18 @@ queue = FIFO()
 class CloudGateway:
 
     def send(queue):
-        time.sleep(30)
+
         start = time.time()
         while True:
-            if queue.pop() is not None:
-                break
-            #time.sleep(3)
-            #item = queue.pop()
-            #if(item != None):
-                #total = time.time() - item["ts"]
-                #print("Queue Time: {0} | IoT Message: {1}".format(total, item))
-            #else:
-        print("Tempo total: {0}".format(time.time() - start))
+            time.sleep(0.5)
+            item = queue.pop()
+            if item is None:
+                continue
+
+            total = time.time() - item["ts"]
+            print("Priority Class: {0} | Queue Time: {1}".format(item["device_type"], total))
+
+        #print("Tempo total: {0}".format(time.time() - start))
                 #break;
 
 
