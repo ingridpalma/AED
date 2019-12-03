@@ -1,6 +1,7 @@
 #Fonte : https://github.com/erikwaing/VEBTree/blob/master/VEB.py
 from collections import deque
 import math
+import json
 
 class VEB:
 
@@ -36,6 +37,38 @@ class VEB:
                 return cluster.member(self.low(x))	# looks for it in the clusters inside
             else:
                 return False
+
+    def delete(self, x):
+        if self.max == self.min:
+            self.min = None
+            self.max = None
+        elif (self.u == 2):
+            if(x == 0):
+                self.min =1
+            else:
+                self.min = 0
+        #encontra a proxima chave e marca como o minimo
+        elif (x == self.min):
+            first_cluster =  self.min(self.summary)
+            x = self.index(first_cluster, self.min(self.cluster[first_cluster]))
+            self.min = x
+            self.delete(self.clusters[self.high(x)], self.low(x))
+            #apos deletar deve-se verificar se o minimo e nulo e deletar do sumario tambem
+            if (self.min(self.clusters[self.high(x)]) == None):
+                self.delete(self.summary, self.high(x))
+            # After the above condition, if the key
+            # is maximum of the treethen...
+            if(x == self.max):
+                max_summary = self.max(self.summary)
+                # If the max value of the summary is null
+                #then only one key is present so
+                #assign min. to max.
+                if (max_summary == None):
+                    self.max = self.min
+                else:
+                    self.max = self.index(max_summary, self.max(self.clusters[self.high(x)]))
+            elif (x == self.max):
+                self.max = self.index(self.high(x), self.max(self.clusters[self.hight(x)]))
 
     def successor(self, x):
         if self.u <= 2:
@@ -129,3 +162,12 @@ class VEB:
                     self.clusters[h].insert(self.low(x))
             if x > self.max:
                 self.max = x
+
+    def push(self, item):
+        self.insert(json.dumps(item))
+
+    def pop(self):
+        r = self.extract_min()
+        if r is not None:
+            return ast.literal_eval(r)
+        return r
