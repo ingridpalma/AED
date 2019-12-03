@@ -11,6 +11,7 @@ from flask import jsonify, request
 from ..model.FIFO import FIFO
 from ..model.BinomialHeap import BinomialHeap
 from ..model.FibonacciHeap import Fheap
+from ..model.VEB import VEB
 from threading import Thread
 import time
 import json
@@ -34,7 +35,8 @@ class CloudGateway:
 
 #queue = FIFO()
 #queue = BinomialHeap()
-queue = Fheap()
+#queue = Fheap()
+queue = VEB(1000)
 
 file = open('result_fheap.txt'.format(time.time()), 'w')
 localGateway = Thread(target=CloudGateway.send, args=(queue, file,))
