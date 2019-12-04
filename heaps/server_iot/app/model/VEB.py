@@ -1,7 +1,16 @@
-#Fonte : https://github.com/erikwaing/VEBTree/blob/master/VEB.py
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Dec  3 21:44:31 2019
+
+@author: mic
+"""
+
+# Fonte : https://github.com/erikwaing/VEBTree/blob/master/VEB.py
 from collections import deque
 import math
 import json
+
 
 class VEB:
 
@@ -18,7 +27,7 @@ class VEB:
             self.summary = None  # VEB(self.high(self.u))
 
     def high(self, x):
-            return int(math.floor(x / math.sqrt(self.u)))
+        return int(math.floor(x / math.sqrt(self.u)))
 
     def low(self, x):
         return int((x % math.ceil(math.sqrt(self.u))))
@@ -27,48 +36,16 @@ class VEB:
         return int((x * math.floor(math.sqrt(self.u))) + y)
 
     def member(self, x):
-        if x == self.min or x == self.max:	# found it as the minimum or maximum
+        if x == self.min or x == self.max:  # found it as the minimum or maximum
             return True
-        elif self.u <= 2:					# has not found it in the "leaf"
+        elif self.u <= 2:  # has not found it in the "leaf"
             return False
         else:
             cluster = self.clusters[self.high(x)]
             if cluster != None:
-                return cluster.member(self.low(x))	# looks for it in the clusters inside
+                return cluster.member(self.low(x))  # looks for it in the clusters inside
             else:
                 return False
-
-    def delete(self, x):
-        if self.max == self.min:
-            self.min = None
-            self.max = None
-        elif (self.u == 2):
-            if (x == 0):
-                self.min = 1
-            else:
-                self.min = 0
-        # encontra a proxima chave e marca como o minimo
-        elif (x == self.min):
-            first_cluster = self.summary.min
-            x = self.index(first_cluster, self.clusters[first_cluster].min)
-            self.min = x
-            self.delete(self.clusters[self.high(x)], self.low(x))
-            # apos deletar deve-se verificar se o minimo e nulo e deletar do sumario tambem
-            if (self.min(self.clusters[self.high(x)]) == None):
-                self.delete(self.summary, self.high(x))
-            # After the above condition, if the key
-            # is maximum of the treethen...
-            if (x == self.max):
-                max_summary = self.max(self.summary)
-                # If the max value of the summary is null
-                # then only one key is present so
-                # assign min. to max.
-                if (max_summary == None):
-                    self.max = self.min
-                else:
-                    self.max = self.index(max_summary, self.max(self.clusters[self.high(x)]))
-            elif (x == self.max):
-                self.max = self.index(self.high(x), self.max(self.clusters[self.hight(x)]))
 
     def successor(self, x):
         if self.u <= 2:
@@ -76,7 +53,7 @@ class VEB:
                 return 1
             else:
                 return None
-        elif self.min != None and x < self.min: # x is less than everything in the tree, returns the minimum
+        elif self.min != None and x < self.min:  # x is less than everything in the tree, returns the minimum
             return self.min
         else:
             h = self.high(x)
@@ -163,11 +140,52 @@ class VEB:
             if x > self.max:
                 self.max = x
 
+    def delete(self, x):
+        if self.max == self.min:
+            self.min = None
+            self.max = None
+        elif (self.u == 2):
+            if (x == 0):
+                self.min = 1
+            else:
+                self.min = 0
+        # encontra a proxima chave e marca como o minimo
+        else:
+
+            if (x == self.min):
+                first_cluster = self.summary.min
+                x = self.index(first_cluster, self.clusters[first_cluster].min)
+                self.min = x
+
+            h = self.high(x)
+            low = self.low(x)
+            cluster = self.clusters[h]
+            self.delete(cluster, low)
+            # apos deletar deve-se verificar se o minimo e nulo e deletar do sumario tambem
+            if (self.min(self.clusters[h]) == None):
+                self.delete(self.summary, h)
+                # After the above condition, if the key
+                # is maximum of the treethen...
+                if (x == self.max):
+                    max_summary = self.summary.max
+                    # If the max value of the summary is null
+                    # then only one key is present so
+                    # assign min. to max.
+                    if (max_summary == None):
+                        self.max = self.min
+                    else:
+                        self.max = self.index(max_summary, self.clusters[h].max)
+            elif (x == self.max):
+                self.max = self.index(h, self.clusters[h].max)
+
     def push(self, item):
         self.insert(json.dumps(item))
 
-    def pop(self):
-        r = self.extract_min()
-        if r is not None:
-            return ast.literal_eval(r)
-        return r
+
+veb = VEB(100)
+
+veb.insert(100)
+veb.insert(123)
+veb.insert(2)
+veb.delete(100)
+
