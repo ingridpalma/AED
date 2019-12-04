@@ -6,10 +6,11 @@ Created on Tue Dec  3 21:44:31 2019
 @author: mic
 """
 
-# Fonte : https://github.com/erikwaing/VEBTree/blob/master/VEB.py
+# Fonte : https://github.com/erikwaing/VEBTree/blob/master/VEB.py -  com customizacao https://github.com/eng.maribeiro
 from collections import deque
 import math
 import json
+import ast
 
 
 class VEB:
@@ -149,7 +150,7 @@ class VEB:
                 self.min = 1
             else:
                 self.min = 0
-        # encontra a proxima chave e marca como o minimo
+        # encontra a proxima chaselfe e marca como o minimo
         else:
 
             if (x == self.min):
@@ -159,11 +160,11 @@ class VEB:
 
             h = self.high(x)
             low = self.low(x)
-            cluster = self.clusters[h]
-            self.delete(cluster, low)
+
+            self.clusters[h].delete(low)
             # apos deletar deve-se verificar se o minimo e nulo e deletar do sumario tambem
-            if (self.min(self.clusters[h]) == None):
-                self.delete(self.summary, h)
+            if (self.clusters[h].min == None):
+                self.summary.delete(h)
                 # After the above condition, if the key
                 # is maximum of the treethen...
                 if (x == self.max):
@@ -178,14 +179,45 @@ class VEB:
             elif (x == self.max):
                 self.max = self.index(h, self.clusters[h].max)
 
+    def extract_min(self):
+        if self.max == None and self.min==None:
+           return None
+        self.delete(self.min)
+        return self.min
+
+
     def push(self, item):
         self.insert(json.dumps(item))
 
+    def pop(self):
+        r = self.extract_min()
+        if r is not None:
+            return ast.literal_eval(r)
+        return r
 
-veb = VEB(100)
+
+'''
+veb = VEB(1024)
 
 veb.insert(100)
 veb.insert(123)
-veb.insert(2)
-veb.delete(100)
+veb.insert(50)
+veb.insert(25)
+veb.insert(10)
+veb.insert(5)
 
+print(veb.min)
+veb.delete(veb.min)
+print(veb.min)
+veb.delete(veb.min)
+print(veb.min)
+veb.delete(veb.min)
+print(veb.min)
+veb.delete(veb.min)
+print(veb.min)
+veb.delete(veb.min)
+print(veb.min)
+veb.delete(veb.min)
+print(veb.min)
+
+'''

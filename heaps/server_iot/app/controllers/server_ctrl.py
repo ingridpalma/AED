@@ -36,7 +36,7 @@ class CloudGateway:
 #queue = FIFO()
 #queue = BinomialHeap()
 #queue = Fheap()
-queue = VEB(1000)
+queue = VEB(1024)
 
 file = open('result_fheap.txt'.format(time.time()), 'w')
 localGateway = Thread(target=CloudGateway.send, args=(queue, file,))
