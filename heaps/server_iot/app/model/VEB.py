@@ -43,26 +43,26 @@ class VEB:
             self.min = None
             self.max = None
         elif (self.u == 2):
-            if(x == 0):
-                self.min =1
+            if (x == 0):
+                self.min = 1
             else:
                 self.min = 0
-        #encontra a proxima chave e marca como o minimo
+        # encontra a proxima chave e marca como o minimo
         elif (x == self.min):
-            first_cluster =  self.min(self.summary)
-            x = self.index(first_cluster, self.min(self.cluster[first_cluster]))
+            first_cluster = self.summary.min
+            x = self.index(first_cluster, self.clusters[first_cluster].min)
             self.min = x
             self.delete(self.clusters[self.high(x)], self.low(x))
-            #apos deletar deve-se verificar se o minimo e nulo e deletar do sumario tambem
+            # apos deletar deve-se verificar se o minimo e nulo e deletar do sumario tambem
             if (self.min(self.clusters[self.high(x)]) == None):
                 self.delete(self.summary, self.high(x))
             # After the above condition, if the key
             # is maximum of the treethen...
-            if(x == self.max):
+            if (x == self.max):
                 max_summary = self.max(self.summary)
                 # If the max value of the summary is null
-                #then only one key is present so
-                #assign min. to max.
+                # then only one key is present so
+                # assign min. to max.
                 if (max_summary == None):
                     self.max = self.min
                 else:
