@@ -187,7 +187,8 @@ class VEB:
 
 
     def push(self, item):
-        self.insert(json.dumps(item))
+        x = int(json.dumps(item))
+        self.insert(x)
 
     def pop(self):
         r = self.extract_min()
