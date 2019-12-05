@@ -182,8 +182,10 @@ class VEB:
     def extract_min(self):
         if self.max == None and self.min==None:
            return None
-        self.delete(self.min)
-        return self.min
+        r = self.min
+        self.delete(r)
+        #print("RETORNO vEB: {0}".format(r))
+        return r
 
 
     def push(self, item):
@@ -193,28 +195,18 @@ class VEB:
         return self.extract_min()
 
 
-'''
-veb = VEB(1024)
 
-veb.insert(100)
-veb.insert(123)
-veb.insert(50)
-veb.insert(25)
-veb.insert(10)
-veb.insert(5)
+veb = VEB(33554432)
 
-print(veb.min)
-veb.delete(veb.min)
-print(veb.min)
-veb.delete(veb.min)
-print(veb.min)
-veb.delete(veb.min)
-print(veb.min)
-veb.delete(veb.min)
-print(veb.min)
-veb.delete(veb.min)
-print(veb.min)
-veb.delete(veb.min)
-print(veb.min)
+veb.insert(300003)
+veb.insert(100003)
+veb.insert(200003)
+veb.insert(300003)
 
-'''
+
+print(veb.extract_min())
+print(veb.extract_min())
+print(veb.extract_min())
+print(veb.extract_min())
+
+

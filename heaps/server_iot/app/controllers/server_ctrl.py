@@ -29,8 +29,9 @@ class CloudGateway:
             if item is None:
                 continue
 
+            #print("Item retornado {0}".format(item))
             item = dd[item][0]
-            print(item["device_type"])
+            #print(item["device_type"])
             total = time.time() - item["ts"]
             #file.write("Priority Class: {0} | Queue Time: {1}\n".format(item["device_type"], total))
             file.write("{0};{1}\n".format(item["device_type"], total))
@@ -67,7 +68,7 @@ def server():
     elif data["device_type"] == 3:
         key = 300000 + len(dd)
 
-    print(key)
+    #print("INSERIDO {0}".format(key))
     dd[key].append(data)
     queue.push(key)
     return "ok", 200
