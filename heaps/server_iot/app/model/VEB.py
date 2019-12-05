@@ -187,14 +187,10 @@ class VEB:
 
 
     def push(self, item):
-        x = int(json.dumps(item))
-        self.insert(x)
+        self.insert(item)
 
     def pop(self):
-        r = self.extract_min()
-        if r is not None:
-            return ast.literal_eval(r)
-        return r
+        return self.extract_min()
 
 
 '''
