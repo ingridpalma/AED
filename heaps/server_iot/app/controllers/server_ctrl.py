@@ -15,30 +15,37 @@ from ..model.VEB import VEB
 from threading import Thread
 import time
 import json
+import ast
+from collections import defaultdict
 
 
 class CloudGateway:
 
-    def send(queue, file):
+    def send(queue, file, dd):
 
         while True:
-            time.sleep(0.5)
+            time.sleep(0.1)
             item = queue.pop()
             if item is None:
                 continue
 
+            item = dd[item][0]
+            print(item["device_type"])
             total = time.time() - item["ts"]
-            file.write("Priority Class: {0} | Queue Time: {1}\n".format(item["device_type"], total))
+            #file.write("Priority Class: {0} | Queue Time: {1}\n".format(item["device_type"], total))
+            file.write("{0};{1}\n".format(item["device_type"], total))
             file.flush()
+
 
 
 #queue = FIFO()
 #queue = BinomialHeap()
 #queue = Fheap()
-queue = VEB(1024)
+queue = VEB(33554432)
+dd = defaultdict(list)
 
-file = open('result_veb.txt'.format(time.time()), 'w')
-localGateway = Thread(target=CloudGateway.send, args=(queue, file,))
+file = open('result_veb_100.csv'.format(time.time()), 'w')
+localGateway = Thread(target=CloudGateway.send, args=(queue, file, dd))
 localGateway.start()
 
 
@@ -52,7 +59,17 @@ def index():
 def server():
     data = request.get_json()
     data["ts"] = time.time()
-    queue.push(data)
+
+    if data["device_type"] == 1:
+        key = 100000 + len(dd)
+    elif data["device_type"] == 2:
+        key = 200000 + len(dd)
+    elif data["device_type"] == 3:
+        key = 300000 + len(dd)
+
+    print(key)
+    dd[key].append(data)
+    queue.push(key)
     return "ok", 200
 
 
