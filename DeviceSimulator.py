@@ -17,7 +17,7 @@ class DeviceSimulator:
         Realiza a leitura de acordo com o tipo de dispositivo informado
     """
 
-    def sensor(type, qtdMessage, interval):
+    def sensor(type, qtdMessage, interval, serverUrl):
         """
         Simula a leitura de um dispositivo e exibe na tela
 
@@ -26,7 +26,6 @@ class DeviceSimulator:
         :param interval: Intervalo para envio das mensagens
         :param stop: Variável que sinaliza o fim da execução do dispositivo
         """
-        serverUrl = "http://127.0.0.1:5000/server"
 
         i = 0
         while(i < qtdMessage):
@@ -73,14 +72,59 @@ if __name__ == "__main__":
         qtdMedium = int(qtdMessages*0.35)
         qtdHigh = qtdMessages - (qtdLow + qtdMedium)
 
-    deviceLow = Thread(target=DeviceSimulator.sensor, args=(DeviceTypeEnum.LOW.value, qtdLow, 1*0.15))
+
+    deviceLow = Thread(target=DeviceSimulator.sensor, args=(DeviceTypeEnum.LOW.value, qtdLow, 1*0.15, "http://127.0.0.1:5000/fifo"))
     deviceLow.start()
 
-    deviceMedium = Thread(target=DeviceSimulator.sensor, args=(DeviceTypeEnum.MEDIUM.value, qtdMedium, 1*0.35))
+    deviceMedium = Thread(target=DeviceSimulator.sensor, args=(DeviceTypeEnum.MEDIUM.value, qtdMedium, 1*0.35, "http://127.0.0.1:5000/fifo"))
     deviceMedium.start()
 
-    deviceHigh = Thread(target=DeviceSimulator.sensor, args=(DeviceTypeEnum.HIGH.value, qtdHigh, 1))
+    deviceHigh = Thread(target=DeviceSimulator.sensor, args=(DeviceTypeEnum.HIGH.value, qtdHigh, 1, "http://127.0.0.1:5000/fifo"))
     deviceHigh.start()
+
+
+    time.sleep(1800)
+
+    deviceLowBin = Thread(target=DeviceSimulator.sensor, args=(DeviceTypeEnum.LOW.value, qtdLow, 1 * 0.15, "http://127.0.0.1:5000/binomial"))
+    deviceLowBin.start()
+
+    deviceMediumBin = Thread(target=DeviceSimulator.sensor, args=(DeviceTypeEnum.MEDIUM.value, qtdMedium, 1 * 0.35, "http://127.0.0.1:5000/binomial"))
+    deviceMediumBin.start()
+
+    deviceHighBin = Thread(target=DeviceSimulator.sensor, args=(DeviceTypeEnum.HIGH.value, qtdHigh, 1, "http://127.0.0.1:5000/binomial"))
+    deviceHighBin.start()
+
+
+    time.sleep(1800)
+
+    deviceLowFib = Thread(target=DeviceSimulator.sensor,
+                       args=(DeviceTypeEnum.LOW.value, qtdLow, 1 * 0.15, "http://127.0.0.1:5000/fib"))
+    deviceLowFib.start()
+
+    deviceMediumFib = Thread(target=DeviceSimulator.sensor,
+                          args=(DeviceTypeEnum.MEDIUM.value, qtdMedium, 1 * 0.35, "http://127.0.0.1:5000/fib"))
+    deviceMediumFib.start()
+
+    deviceHighFib = Thread(target=DeviceSimulator.sensor,
+                        args=(DeviceTypeEnum.HIGH.value, qtdHigh, 1, "http://127.0.0.1:5000/fib"))
+    deviceHighFib.start()
+
+
+    time.sleep(1800)
+
+    deviceLowVeb = Thread(target=DeviceSimulator.sensor,
+                       args=(DeviceTypeEnum.LOW.value, qtdLow, 1 * 0.15, "http://127.0.0.1:5000/veb"))
+    deviceLowVeb.start()
+
+    deviceMediumVeb = Thread(target=DeviceSimulator.sensor,
+                          args=(DeviceTypeEnum.MEDIUM.value, qtdMedium, 1 * 0.35, "http://127.0.0.1:5000/veb"))
+    deviceMediumVeb.start()
+
+    deviceHighVeb = Thread(target=DeviceSimulator.sensor,
+                        args=(DeviceTypeEnum.HIGH.value, qtdHigh, 1, "http://127.0.0.1:5000/veb"))
+    deviceHighVeb.start()
+
+
 
 
     # Criação de threads para simular o comportamento dos dispositivos
