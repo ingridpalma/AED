@@ -37,9 +37,10 @@ class CloudGateway:
     def sendVEB(queue, file, dd):
 
         while True:
-            time.sleep(0.1)
+            #time.sleep(0.1)
             item = queue.pop()
             if item is None:
+
                 continue
 
             item = dd[item][0]
@@ -55,19 +56,19 @@ vebImpl = VEB(33554432)
 
 dd = defaultdict(list)
 
-file_veb = open('result_veb_10000.csv'.format(time.time()), 'w')
+file_veb = open('result_veb_1000.csv'.format(time.time()), 'w')
 localGateway_veb = Thread(target=CloudGateway.sendVEB, args=(vebImpl, file_veb, dd))
 localGateway_veb.start()
 
-file_fifo = open('result_fifo_10000.csv'.format(time.time()), 'w')
+file_fifo = open('result_fifo_1000.csv'.format(time.time()), 'w')
 localGateway_fifo = Thread(target=CloudGateway.send, args=(fifoImpl, file_fifo))
 localGateway_fifo.start()
 
-file_binomial = open('result_binomial_10000.csv'.format(time.time()), 'w')
+file_binomial = open('result_binomial_1000.csv'.format(time.time()), 'w')
 localGateway_binomial = Thread(target=CloudGateway.send, args=(binomialImpl, file_binomial))
 localGateway_binomial.start()
 
-file_fib = open('result_fib_10000.csv'.format(time.time()), 'w')
+file_fib = open('result_fib_1000.csv'.format(time.time()), 'w')
 localGateway_fib = Thread(target=CloudGateway.send, args=(fibImpl, file_fib))
 localGateway_fib.start()
 

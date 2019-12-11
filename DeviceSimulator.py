@@ -72,6 +72,8 @@ if __name__ == "__main__":
         qtdMedium = int(qtdMessages*0.35)
         qtdHigh = qtdMessages - (qtdLow + qtdMedium)
 
+    intervaloEntreAlgoritmos = 240;
+
 
     deviceLow = Thread(target=DeviceSimulator.sensor, args=(DeviceTypeEnum.LOW.value, qtdLow, 1*0.15, "http://127.0.0.1:5000/fifo"))
     deviceLow.start()
@@ -83,7 +85,7 @@ if __name__ == "__main__":
     deviceHigh.start()
 
 
-    time.sleep(1800)
+    time.sleep(intervaloEntreAlgoritmos)
 
     deviceLowBin = Thread(target=DeviceSimulator.sensor, args=(DeviceTypeEnum.LOW.value, qtdLow, 1 * 0.15, "http://127.0.0.1:5000/binomial"))
     deviceLowBin.start()
@@ -95,7 +97,22 @@ if __name__ == "__main__":
     deviceHighBin.start()
 
 
-    time.sleep(1800)
+    time.sleep(intervaloEntreAlgoritmos)
+
+    deviceLowVeb = Thread(target=DeviceSimulator.sensor,
+                          args=(DeviceTypeEnum.LOW.value, qtdLow, 1 * 0.15, "http://127.0.0.1:5000/veb"))
+    deviceLowVeb.start()
+
+    deviceMediumVeb = Thread(target=DeviceSimulator.sensor,
+                             args=(DeviceTypeEnum.MEDIUM.value, qtdMedium, 1 * 0.35, "http://127.0.0.1:5000/veb"))
+    deviceMediumVeb.start()
+
+    deviceHighVeb = Thread(target=DeviceSimulator.sensor,
+                           args=(DeviceTypeEnum.HIGH.value, qtdHigh, 1, "http://127.0.0.1:5000/veb"))
+    deviceHighVeb.start()
+
+
+    time.sleep(intervaloEntreAlgoritmos)
 
     deviceLowFib = Thread(target=DeviceSimulator.sensor,
                        args=(DeviceTypeEnum.LOW.value, qtdLow, 1 * 0.15, "http://127.0.0.1:5000/fib"))
@@ -109,20 +126,6 @@ if __name__ == "__main__":
                         args=(DeviceTypeEnum.HIGH.value, qtdHigh, 1, "http://127.0.0.1:5000/fib"))
     deviceHighFib.start()
 
-
-    time.sleep(1800)
-
-    deviceLowVeb = Thread(target=DeviceSimulator.sensor,
-                       args=(DeviceTypeEnum.LOW.value, qtdLow, 1 * 0.15, "http://127.0.0.1:5000/veb"))
-    deviceLowVeb.start()
-
-    deviceMediumVeb = Thread(target=DeviceSimulator.sensor,
-                          args=(DeviceTypeEnum.MEDIUM.value, qtdMedium, 1 * 0.35, "http://127.0.0.1:5000/veb"))
-    deviceMediumVeb.start()
-
-    deviceHighVeb = Thread(target=DeviceSimulator.sensor,
-                        args=(DeviceTypeEnum.HIGH.value, qtdHigh, 1, "http://127.0.0.1:5000/veb"))
-    deviceHighVeb.start()
 
 
 
