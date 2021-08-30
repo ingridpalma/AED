@@ -11,7 +11,7 @@ When running the server for the first time:
      On Windows:
      .\env\Scripts\activate
    
-2. Install django and djangorestframework
+2. Install django and django REST framework
   pip install ...
   
 3. Create the device database
