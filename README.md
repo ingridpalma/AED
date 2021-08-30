@@ -1,24 +1,24 @@
-# AED
-Projeto Heap - Grupo 4
+# Design and Evaluation of IoT Gateway for DataPrioritization based on Van Emde Boas Tree
 
-O server está em: http://aedheaps.pythonanywhere.com/admin/
+The server is at: http://aedheaps.pythonanywhere.com/admin/
 
-Ao rodar a primeira vez o servidor:
-  1. Criar env para o projeto:
-    python3 -m venv env
-    On macOS and Linux:
-    source env/bin/activate
-    On Windows:
-    .\env\Scripts\activate
+When running the server for the first time:
+
+1. Create env for the project:
+     python3 -m venv env
+     On macOS and Linux:
+     source env/bin/activate
+     On Windows:
+     .\env\Scripts\activate
    
-  2. Instalar django e djangorestframework
+2. Install django and djangorestframework
   pip install ...
   
-  3. Criar o banco de dados dos dispositivos
-  na raiz do projeto (AED\heaps)
-  python manage.py makemigrations heaps_server
-  python manage.py migrate
+3. Create the device database
+   in the project root (AED\heaps)
+   python manage.py makemigrations heaps_server
+   python manage.py migrate
   
-  4. Colocar no ar
+4. Put on the air
   python manage.py runserver
 
